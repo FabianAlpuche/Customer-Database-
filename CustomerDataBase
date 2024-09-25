@@ -1,0 +1,80 @@
+#include <stdio.h> 
+#include <string.h>
+
+#define Max_Name_Length 20
+#define Max_Customer_Count 20
+#define Max_Phone_Length 16
+
+//Plus 1 to account for null terminator
+struct Customer
+{
+  char firstName[Max_Name_Length + 1];
+  char middleName[Max_Name_Length + 1];
+  char lastName[Max_Name_Length + 1];
+  char phoneNumber[Max_Phone_Length + 1];
+  float balance;
+};
+// Function displaying details for 1 customer
+// Function displays all customers stored in the database
+void show_customer(struct Customer cust);
+void show_database(struct Customer cust_db[], int size);
+
+
+int main(){
+  struct Customer cust_db[Max_Customer_Count];
+  struct Customer customer;
+  int customer_count = 0;
+  char command[3];
+
+  while (1){
+    printf("Please enter the next customer record.\n:X Exits the program\n:S Shows the contents of the database\nEnter First Name:\n");
+    scanf("%s", command);
+    
+    if(strcasecmp(command, "x") == 0){
+      printf("Good Bye !!");
+      break;
+    }
+    if (strcasecmp(command, "s") == 0){
+      show_database(cust_db, customer_count);
+      continue;
+    }
+    strcpy(cust_db[customer_count].firstName, command);
+
+    printf("Enter middle name: ");
+    scanf("%s", cust_db[customer_count].middleName);
+
+    printf("Enter last name: ");
+    scanf("%s", cust_db[customer_count].lastName);
+
+    printf("Enter phone number: ");
+    scanf("%s", cust_db[customer_count].phoneNumber);
+
+    printf("Enter balance: ");
+    scanf("%f", &cust_db[customer_count].balance);
+
+    customer_count++;
+    if (customer_count >= Max_Customer_Count){
+      printf("Database is full. Cannot add more customers.\n");
+      break;
+    }
+  }
+  return 0;
+}
+void show_customer(struct Customer cust){
+printf("First Name: %s\n", cust.firstName);
+printf("Middle Name: %s\n", cust.middleName);
+printf("Last Name: %s\n", cust.lastName);
+printf("Phonenumber: %s\n", cust.phoneNumber);
+printf("Balance: %f\n", cust.balance);
+printf("----------------------\n");
+}
+void show_database(struct Customer cust_db[], int size){
+  if (size == 0){
+    printf("Database is empty.\n");
+    return;
+  }
+   for (int i = 0; i < size; i++) {
+     printf("Customer %d:\n", i + 1);
+     show_customer(cust_db[i]);
+   } 
+}
